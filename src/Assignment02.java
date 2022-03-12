@@ -1,40 +1,34 @@
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
-import static java.util.stream.Collectors.toList;
+
 
 public class Assignment02 {
 
-       public  static int minimumDistances (Integer [] a)
+    public  static int minimumDistances (List<Integer> a)
         {
             HashMap<Integer, Integer> hmap = new HashMap<>();
 
-            int minDistance = Integer.MAX_VALUE;
+            int minDist = Integer.MAX_VALUE;
 
             int prevIndex = 0, currentIndex = 0;
 
             // find the minimum distance
 
-            for (int i = 0; i < a.length; i++) {
+            for (int i = 0; i < a.size(); i++) {
 
-                if (hmap.containsKey(a[i])) {
+                if (hmap.containsKey(a.get(i))) {
                     currentIndex = i;
-
-                    // Fetch the previous index from map.
-                    prevIndex = hmap.get(a[i]);
-
+                    prevIndex = hmap.get(a.get(i));
                     // Find the minimum distance.
-                    minDistance = Math.min((currentIndex - prevIndex), minDistance);
+                    minDist = Math.min((currentIndex - prevIndex), minDist);
                 }
 
-                hmap.put(a[i], i);
+                hmap.put(a.get(i), i);
             }
 
-            // return minimum distance, if no such elements found, return -1
-            return (
-                    minDistance == Integer.MAX_VALUE ? -1 : minDistance);
+            //  return minimum distance
+            return (minDist == Integer.MAX_VALUE ? -1 : minDist);
         }
-
 
 
     public static void main(String[] args) throws IOException {
@@ -44,12 +38,17 @@ public class Assignment02 {
 
         int n = Integer.parseInt(bufferedReader.readLine().trim());
 
-        List <Integer> a = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-                .map(Integer::parseInt)
-                .collect(toList());
-        Integer[] array = a.toArray(new Integer[a.size()]);
+        String[] a_tmp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
 
-        int result = Assignment02.minimumDistances ( array);
+        List<Integer> a = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int val = Integer.parseInt(a_tmp[i]);
+            a.add(val);
+        }
+
+        int result = Assignment02.minimumDistances(a);
+
         System.out.println("The minimum distance is  "+result);
 
         bufferedWriter.write( String.valueOf(result));
